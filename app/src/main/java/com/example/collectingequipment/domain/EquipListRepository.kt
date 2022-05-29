@@ -1,5 +1,7 @@
 package com.example.collectingequipment.domain
 
+import androidx.lifecycle.LiveData
+
 interface EquipListRepository {
 
     fun  addEquipItem(equipItem: EquipItem)
@@ -8,7 +10,7 @@ interface EquipListRepository {
 
     fun getEquipItem(equipItemId: Int): EquipItem
 
-    fun getEquipList(): List<EquipItem>
+    fun getEquipList(): LiveData<List<EquipItem>>
 
     fun removeEquipItem(equipItem: EquipItem)
 }
