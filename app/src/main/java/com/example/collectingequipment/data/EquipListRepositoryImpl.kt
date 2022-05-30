@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.collectingequipment.domain.EquipItem
 import com.example.collectingequipment.domain.EquipListRepository
+import kotlin.random.Random
 
 object EquipListRepositoryImpl: EquipListRepository {
 
@@ -14,7 +15,7 @@ object EquipListRepositoryImpl: EquipListRepository {
 
     init {
         for (i in 0 until 100) {
-            val item = EquipItem("Name $i",i, true)
+            val item = EquipItem("Name $i",i, Random.nextBoolean())
             addEquipItem(item)
         }
     }
