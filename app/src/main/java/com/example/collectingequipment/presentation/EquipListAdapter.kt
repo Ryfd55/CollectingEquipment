@@ -22,9 +22,9 @@ class EquipListAdapter : RecyclerView.Adapter<EquipListAdapter.EquipItemViewHold
         val layout = when (viewType) {
             VIEW_TYPE_DISABLED -> R.layout.item_equip_disabled
             VIEW_TYPE_ENABLED -> R.layout.item_equip_enabled
-            else -> throw RuntimeException ("Unknown view type: $viewType")
+            else -> throw RuntimeException("Unknown view type: $viewType")
         }
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return EquipItemViewHolder(view)
     }
 
@@ -33,10 +33,8 @@ class EquipListAdapter : RecyclerView.Adapter<EquipListAdapter.EquipItemViewHold
         viewholder.view.setOnLongClickListener {
             true
         }
-        if (equipItem.enabled) {
-            viewholder.tvName.text = equipItem.name
-            viewholder.tvCount.text = equipItem.count.toString()
-            }
+        viewholder.tvName.text = equipItem.name
+        viewholder.tvCount.text = equipItem.count.toString()
     }
 
     override fun onViewRecycled(viewholder: EquipItemViewHolder) {
@@ -57,7 +55,7 @@ class EquipListAdapter : RecyclerView.Adapter<EquipListAdapter.EquipItemViewHold
 
     override fun getItemViewType(position: Int): Int {
         val item = equipList[position]
-        return  if (item.enabled) {
+        return if (item.enabled) {
             VIEW_TYPE_ENABLED
         } else {
             VIEW_TYPE_DISABLED
@@ -68,7 +66,8 @@ class EquipListAdapter : RecyclerView.Adapter<EquipListAdapter.EquipItemViewHold
         val tvName = view.findViewById<TextView>(R.id.tv_name)
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
     }
-    companion object{
+
+    companion object {
         const val VIEW_TYPE_ENABLED = 100
         const val VIEW_TYPE_DISABLED = 101
     }
