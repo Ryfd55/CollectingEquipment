@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 
 class EquipListAdapter : RecyclerView.Adapter<EquipListAdapter.EquipItemViewHolder>() {
 
+    var count = 0
     var equipList = listOf<EquipItem>()
         set(value) {
             field = value
@@ -18,51 +19,58 @@ class EquipListAdapter : RecyclerView.Adapter<EquipListAdapter.EquipItemViewHold
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EquipItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_equip_disabled,
-            parent,
-            false
-        )
+        val layout = when (viewType) {
+            VIEW_TYPE_DISABLED -> R.layout.item_equip_disabled
+            VIEW_TYPE_ENABLED -> R.layout.item_equip_enabled
+            else -> throw RuntimeException ("Unknown view type: $viewType")
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent,false)
         return EquipItemViewHolder(view)
     }
 
     override fun onBindViewHolder(viewholder: EquipItemViewHolder, position: Int) {
         val equipItem = equipList[position]
-        val status = if (equipItem.enabled) {
-            "Active"
-        } else {
-            "Not active"
-        }
-
         viewholder.view.setOnLongClickListener {
             true
         }
         if (equipItem.enabled) {
-            viewholder.tvName.text = "${equipItem.name} $status"
+            viewholder.tvName.text = equipItem.name
             viewholder.tvCount.text = equipItem.count.toString()
-            viewholder.tvName.setTextColor(
-                ContextCompat.getColor(
-                    viewholder.view.context,
-                    android.R.color.holo_red_light
-                )
-            )
-        }
+            }
     }
 
     override fun onViewRecycled(viewholder: EquipItemViewHolder) {
         super.onViewRecycled(viewholder)
         viewholder.tvName.text = ""
         viewholder.tvCount.text = ""
-        viewholder.tvName.setTextColor(ContextCompat.getColor(viewholder.view.context,
-            android.R.color.white))
+        viewholder.tvName.setTextColor(
+            ContextCompat.getColor(
+                viewholder.view.context,
+                android.R.color.white
+            )
+        )
     }
 
     override fun getItemCount(): Int {
         return equipList.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        val item = equipList[position]
+        return  if (item.enabled) {
+            VIEW_TYPE_ENABLED
+        } else {
+            VIEW_TYPE_DISABLED
+        }
+    }
+
     class EquipItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val tvName = view.findViewById<TextView>(R.id.tv_name)
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
     }
+    companion object{
+        const val VIEW_TYPE_ENABLED = 100
+        const val VIEW_TYPE_DISABLED = 101
+    }
+
 }
